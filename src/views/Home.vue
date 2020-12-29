@@ -57,13 +57,16 @@ export default {
   width: 90vw;
   margin: auto;
   display: flex;
-  flex-direction: row;
   align-items: center;
+  flex-wrap: wrap;
 }
 .contact-list-item {
   width: fit-content;
   margin: 5px;
   padding: 10px;
   border: 1px solid gray;
+}
+.search-wrapper {
+  margin: 10px;
 }
 </style>

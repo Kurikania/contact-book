@@ -74,6 +74,7 @@ h3 {
   margin: 10px;
 }
 input[type="text"] {
+  margin: 5px;
   padding: 3px;
   font-size: 1.2em;
 }

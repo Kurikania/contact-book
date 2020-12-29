@@ -10,7 +10,7 @@ export default new Vuex.Store({
       { id: "2", firstName: "Олег", lastName: "Олегов", number: 88127654321, email: "oleg@inbox.ru" },
       { id: "3", firstName: "Мария", lastName: "Семенова", number: 88127946134, email: "maria@Minbox.ru" },
     ], 
-    restore:[]
+    restore:[]  // restore хранит значение полей до внесения изменения, поэтому при отмене последнего действия можно вернуть предыдущее значение store
   },
   mutations: {
     ADD_CONTACT(state, contact) {
