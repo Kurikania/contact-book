@@ -5,15 +5,26 @@
     </div>
     <div class="edit-form">
       <div class="edit-form-item" v-for="(field, index) in fields" :key="index">
-        <label :for="index">{{Object.keys(field)[0]}}</label>
+        <label :for="index">{{ Object.keys(field)[0] }}</label>
         <input
-          :id = "index"
+          :id="index"
           type="text"
           v-model="field[Object.keys(field)[0]]"
           :placeholder="Object.keys(field)[0]"
         />
-        <div class = "delete edit-form-btn" @click="deleteField(field)">-</div>
-        <div class="restore edit-form-btn" @click="restoreValue(field)"></div>
+        <div
+          v-if="Object.keys(field)[0] !== 'id'"
+          class="delete edit-form-btn"
+          @click="deleteField(field)"
+        >
+          -
+        </div>
+        <div
+          v-if="Object.keys(field)[0] !== 'id'"
+          class="restore edit-form-btn"
+          @click="restoreValue(field)"
+        ></div>
+        <div v-else style="width: 70px"></div>
       </div>
       <div style="display: flex; margin: auto">
         <button v-if="addField == false" @click="addField = !addField">
@@ -72,49 +83,67 @@ export default {
     },
   },
   methods: {
-    deleteField(field) {  // Для удаления поля в store передается id пользователя и само поле
+    deleteField(field) {
+      // Для удаления поля в store передается id пользователя и само поле
       if (
         Object.keys(field)[0] == "firstName" ||
         Object.keys(field)[0] == "lastName" ||
         Object.keys(field)[0] == "id"
       ) {
-        alert("Это обязательное поле");
+        this.$alert("Это обязательное поле");
         return;
       }
-      if (confirm(`Вы уверены что хотите удалить поле ${Object.keys(field)[0]}?`)) {
+      this.$confirm(`Вы уверены что хотите удалить поле ${Object.keys(field)[0]}?`).then(() => {
         let data = {
           id: this.contact.id,
           [Object.keys(field)[0]]: Object.values(field)[0],
         };
         this.$store.dispatch("removeField", data);
-      }
+      });
     },
     updateInfo() {
       this.$store.dispatch("updateContact", this.updatedContact);
       this.$router.push({ path: "/" });
     },
-    addNewFieldName() { // Добавление нового поля на верстку. В store оно попадает только при обновлении информации контакта. 
-      if (this.newFieldName.length > 0 ) {      
-      if (confirm(`Вы уверены что хотите добавить поле ${this.newFieldName}?`)) {
-        this.fields.push({ [this.newFieldName]: "" });
-        this.newFieldName = "";
-      }
+    addNewFieldName() {
+      // Добавление нового поля на верстку. В store оно попадает только при обновлении информации контакта.
+      if (this.newFieldName.length > 0) {
+        if (
+          confirm(`Вы уверены что хотите добавить поле ${this.newFieldName}?`)
+        ) {
+          this.fields.push({ [this.newFieldName]: "" });
+          this.newFieldName = "";
+        }
       } else {
-        alert('Поле не должно быть пустым')
+        alert("Поле не должно быть пустым");
       }
     },
-    restoreValue(field) { //метод возвращает значение поля, сохраненное в store
-      if (confirm(`Вы уверены что хотите восстановить значение поля ${Object.keys(field)[0]}?`)) {
+    restoreValue(field) {
+      //метод возвращает значение поля, сохраненное в store
+      if (
+        confirm(
+          `Вы уверены что хотите восстановить значение поля ${
+            Object.keys(field)[0]
+          }?`
+        )
+      ) {
         let oldValue = this.contact[Object.keys(field)];
         this.contact[[Object.keys(field)][0]] = "";
         this.contact[[Object.keys(field)][0]] = oldValue;
       }
     },
-    goBack() { //Если были внесены изменения, но не сохранены, то страница спросит пользователя
-      if (JSON.stringify(this.contact) === JSON.stringify(this.updatedContact)) {
+    goBack() {
+      //Если были внесены изменения, но не сохранены, то страница спросит пользователя
+      if (
+        JSON.stringify(this.contact) === JSON.stringify(this.updatedContact)
+      ) {
         this.$router.push({ path: "/" });
       } else {
-        if (confirm(`Вы уверены что хотите вернуться на главную? Внесенные извенения не сохранены`)) {
+        if (
+          confirm(
+            `Вы уверены что хотите вернуться на главную? Внесенные извенения не сохранены`
+          )
+        ) {
           this.$router.push({ path: "/" });
         } else {
           return;
@@ -139,16 +168,15 @@ export default {
   transition: ease-in-out 0.3s;
 }
 .edit-form-btn:hover {
-    box-shadow: 0 0 10px rgb(20, 20, 20);
+  box-shadow: 0 0 10px rgb(20, 20, 20);
 }
 .restore {
   background-image: url("https://img.icons8.com/ios-glyphs/30/000000/undo.png");
-   background-size: cover
-  
+  background-size: cover;
 }
 .delete {
   background-image: url("https://img.icons8.com/android/20/000000/delete.png");
-    background-size: 15px;
+  background-size: 15px;
 }
 .edit-form {
   display: flex;

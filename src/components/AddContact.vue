@@ -14,13 +14,14 @@
             v-for="(field, index) in fields"
             :key="index"
           >
-          <label :for="index">{{Object.keys(field)[0]}}</label>
-            <input :id="index"
+            <label :for="index">{{ Object.keys(field)[0] }}</label>
+            <input
+              :id="index"
               type="text"
               v-model="field[Object.keys(field)[0]]"
               :placeholder="Object.keys(field)[0]"
             />
-            <div
+            <div 
               class="icons8-trash-can"
               @click.prevent="deleteField(index)"
             ></div>
@@ -59,7 +60,7 @@ export default {
     show: false,
     modalBackground: {
       position: "fixed",
-      "z-index": 9999,
+      "z-index": 999,
       "padding-top": "25px",
       left: 0,
       top: 0,
@@ -76,20 +77,21 @@ export default {
         newContact[Object.keys(this.fields[i])[0]] = Object.values(
           this.fields[i]
         )[0];
-        newContact.id = "" + ++this.id ;
+        newContact.id = "" + ++this.id;
         this.fields[i][Object.keys(this.fields[i])[0]] = "";
       }
       this.$store.dispatch("addContact", newContact);
       this.show = false;
     },
     addNewFieldName() {
-        if (this.newFieldName.length > 0 ) {   
-      if (confirm(`Вы уверены что хотите добавить поле ${this.newFieldName} ?`))
-        this.fields.push({ [this.newFieldName]: "" });
-      this.newFieldName = "";
-        } else {
-        alert('Поле не должно быть пустым')
-        }
+      if (this.newFieldName.length > 0) {
+        this.$confirm(`Вы уверены что хотите добавить поле ${this.newFieldName} ?`).then(() => {
+          this.fields.push({ [this.newFieldName]: "" });
+          this.newFieldName = "";
+        });
+      } else {
+        this.$alert("Поле не должно быть пустым");
+      }
     },
     deleteField(index) {
       if (
@@ -97,18 +99,16 @@ export default {
         Object.keys(this.fields[index])[0] === "lastName" ||
         Object.keys(this.fields[index])[0] === "number"
       ) {
-        alert("Вы не можете удалить это поле");
+        this.$alert("Вы не можете удалить это поле");
         return;
       }
-      if (
-        confirm(
-          "Вы уверены что хотите удалить поле ",
-          Object.keys(this.fields[index])[0],
-          "?"
-        )
-      )
-        console.log(this.fields[index]);
-      this.fields.splice(index, 1);
+      this.$confirm(
+        `Вы уверены что хотите удалить поле ${
+          Object.keys(this.fields[index])[0]
+        } ?`
+      ).then(() => {
+        this.fields.splice(index, 1);
+      });
     },
   },
   computed: {},
@@ -117,7 +117,7 @@ export default {
 
 <style scoped>
 label {
-  color: #3e3e3e
+  color: #3e3e3e;
 }
 .add-contact-form {
   position: relative;

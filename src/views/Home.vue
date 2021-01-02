@@ -44,9 +44,9 @@ export default {
   },
   methods: {
     deleteContact(id) {
-      if (confirm(`Вы уверены что хотите удалить контакт ?`)) {
-      this.$store.dispatch("removeContact", id);
-      }
+      this.$confirm("Вы уверены что хотите удалить контакт ?").then(() => {
+        this.$store.dispatch("removeContact", id);
+      });
     },
   },
 };

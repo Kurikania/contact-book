@@ -17,12 +17,12 @@ export default {
     restore() {
       if (JSON.stringify(this.$store.getters.contacts) === JSON.stringify(this.$store.getters.restore) ||
        this.$store.getters.restore.length == 0)  {
-        alert("Невозможно отменить действие")
+        this.$alert("Невозможно отменить действие")
         return
       }
-      if (confirm("Вы хотите отменить последнее действие?")) {
+      this.$confirm(`Вы хотите отменить последнее действие?`).then(() => {
         this.$store.dispatch("restore");
-      }
+      })
     },
   },
 };
