@@ -139,22 +139,20 @@ export default {
           this.newFieldName = "";
         }
       } else {
-        alert("Поле не должно быть пустым");
+        this.$alert("Поле не должно быть пустым");
       }
     },
     restoreValue(field) {
       //метод возвращает значение поля, сохраненное в store
-      if (
-        confirm(
-          `Вы уверены что хотите восстановить значение поля ${
+      this.$confirm(
+        `Вы уверены что хотите восстановить значение поля ${
             Object.keys(field)[0]
           }?`
-        )
-      ) {
+      ).then(() => {     
         let oldValue = this.contact[Object.keys(field)];
         this.contact[[Object.keys(field)][0]] = "";
         this.contact[[Object.keys(field)][0]] = oldValue;
-      }
+      })
     },
     goBack() {
       //Если были внесены изменения, но не сохранены, то страница спросит пользователя
@@ -164,7 +162,7 @@ export default {
         this.$router.push({ path: "/" });
       } else {
         if (
-          confirm(
+          this.$confirm(
             `Вы уверены что хотите вернуться на главную? Внесенные извенения не сохранены`
           )
         ) {
