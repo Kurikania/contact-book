@@ -4,27 +4,49 @@
       <a href="javascript:;" @click="goBack">Все контакты</a>
     </div>
     <div class="edit-form">
-      <div class="edit-form-item" v-for="(field, index) in fields" :key="index">
+      <div
+        class="edit-form-field"
+        v-for="(field, index) in fields"
+        :key="index"
+      >
         <label :for="index">{{ Object.keys(field)[0] }}</label>
-        <input
-          :id="index"
-          type="text"
-          v-model="field[Object.keys(field)[0]]"
-          :placeholder="Object.keys(field)[0]"
-        />
-        <div
-          v-if="Object.keys(field)[0] !== 'id'"
-          class="delete edit-form-btn"
-          @click="deleteField(field)"
-        >
-          -
+        <div class="edit-form-item">
+          <input
+            v-if="Object.keys(field)[0] !== 'id'"
+            :id="index"
+            type="text"
+            v-model="field[Object.keys(field)[0]]"
+            :placeholder="Object.keys(field)[0]"
+          />
+
+          <input
+            v-else
+            disabled
+            :id="index"
+            type="text"
+            v-model="field[Object.keys(field)[0]]"
+            :placeholder="Object.keys(field)[0]"
+          />
+
+          <div
+            v-if="
+              Object.keys(field)[0] !== 'id' &&
+              Object.keys(field)[0] !== 'firstName' &&
+              Object.keys(field)[0] !== 'lastName'
+            "
+            class="delete edit-form-btn"
+            @click="deleteField(field)"
+          >
+            -
+          </div>
+          <div v-else style="width: 35px"></div>
+          <div
+            v-if="Object.keys(field)[0] !== 'id'"
+            class="restore edit-form-btn"
+            @click="restoreValue(field)"
+          ></div>
+          <div v-else style="width: 35px"></div>
         </div>
-        <div
-          v-if="Object.keys(field)[0] !== 'id'"
-          class="restore edit-form-btn"
-          @click="restoreValue(field)"
-        ></div>
-        <div v-else style="width: 70px"></div>
       </div>
       <div style="display: flex; margin: auto">
         <button v-if="addField == false" @click="addField = !addField">
@@ -93,7 +115,9 @@ export default {
         this.$alert("Это обязательное поле");
         return;
       }
-      this.$confirm(`Вы уверены что хотите удалить поле ${Object.keys(field)[0]}?`).then(() => {
+      this.$confirm(
+        `Вы уверены что хотите удалить поле ${Object.keys(field)[0]}?`
+      ).then(() => {
         let data = {
           id: this.contact.id,
           [Object.keys(field)[0]]: Object.values(field)[0],
@@ -155,6 +179,12 @@ export default {
 </script>
 
 <style scoped>
+.edit-form-field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
 .edit-form-btn {
   margin: 0 5px;
   display: inline-block;
@@ -192,5 +222,10 @@ export default {
 }
 .edit-form-item input[type="text"] {
   padding: 3px;
+}
+@media only screen and (max-width: 600px) {
+  .edit-form-field {
+    flex-direction: column;
+  }
 }
 </style>

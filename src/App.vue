@@ -2,7 +2,7 @@
   <div id="app">
     <div class = "nav">
       <AddContact />
-      <button @click="restore">Отменить последнее действие</button>
+      <button class="restore" @click="restore">Отменить действие</button>
     </div>
     <router-view />
   </div>
@@ -77,5 +77,11 @@ input[type="text"] {
   margin: 5px;
   padding: 3px;
   font-size: 1.2em;
+}
+
+@media only screen and (max-width: 600px) { 
+  button {
+    padding: 5px;
+  }
 }
 </style>

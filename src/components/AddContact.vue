@@ -15,16 +15,19 @@
             :key="index"
           >
             <label :for="index">{{ Object.keys(field)[0] }}</label>
-            <input
-              :id="index"
-              type="text"
-              v-model="field[Object.keys(field)[0]]"
-              :placeholder="Object.keys(field)[0]"
-            />
-            <div 
-              class="icons8-trash-can"
-              @click.prevent="deleteField(index)"
-            ></div>
+            <div style="display: flex; align-items: center">
+              <input
+                :id="index"
+                type="text"
+                v-model="field[Object.keys(field)[0]]"
+                :placeholder="Object.keys(field)[0]"
+              />
+              <div v-if="Object.keys(field)[0] !== 'firstName' && Object.keys(field)[0] !== 'lastName'  "
+                class="icons8-trash-can"
+                @click.prevent="deleteField(index)"
+              ></div>
+            <div v-else style="width: 37px"> </div>
+            </div>
           </div>
           <div style="display: flex; margin: auto">
             <button
@@ -33,7 +36,7 @@
             >
               Добавить поле
             </button>
-            <button v-else @click.prevent="addField = !addField">X</button>
+            <button style="align-self: baseline;" v-else @click.prevent="addField = !addField">X</button>
             <div v-if="addField">
               <input
                 type="text"
@@ -85,7 +88,9 @@ export default {
     },
     addNewFieldName() {
       if (this.newFieldName.length > 0) {
-        this.$confirm(`Вы уверены что хотите добавить поле ${this.newFieldName} ?`).then(() => {
+        this.$confirm(
+          `Вы уверены что хотите добавить поле ${this.newFieldName} ?`
+        ).then(() => {
           this.fields.push({ [this.newFieldName]: "" });
           this.newFieldName = "";
         });
@@ -160,5 +165,17 @@ h2 {
 #close {
   position: absolute;
   left: 90%;
+}
+
+@media only screen and (max-width: 600px) {
+  .add-contact-form-item {
+    flex-direction: column;
+  }
+  input {
+    width: 80%;
+  }
+  #close {
+    padding: 5px;
+  }
 }
 </style>
