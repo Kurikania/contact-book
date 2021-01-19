@@ -101,8 +101,7 @@ export default {
     deleteField(index) {
       if (
         Object.keys(this.fields[index])[0] == "firstName" ||
-        Object.keys(this.fields[index])[0] === "lastName" ||
-        Object.keys(this.fields[index])[0] === "number"
+        Object.keys(this.fields[index])[0] === "lastName"        
       ) {
         this.$alert("Вы не можете удалить это поле");
         return;
